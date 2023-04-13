@@ -1,25 +1,24 @@
 import './App.css';
-import Footer from './components/Footer';
-import Navbar from './components/Navbar';
 import Home from './screens/Home'
 import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
-//import Login from './screens/Login';
-// import '../node_modules/bootstrap-dark-5/dist/css/bootstrap-dark.min.css'
-// import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
-// import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 import Signup from './screens/SignUp';
 import Login from './screens/Login';
 import ProfileNavbar from './components/ProfileNavbar';
 import About from './components/About';
-import { CartProvider } from './components/ContextReducer';
 import Experience from './components/Experience';
-import Skills from './components/Skills';
-//import MyOrder from './screens/MyOrder';
-//import Profile from './screens/Profile';
+import Experiences from './screens/Experiences';
+import FindStudent from './screens/FindStudent';
+import Recieved from './screens/Recieved'
+import Sent from './screens/Sent'
+import ExperiencePage from './components/ExperiencePage';
+import Cpi from './components/Cpi';
+import Resources from './components/Resources';
+import ExperienceUpdate from './components/Updates/ExperienceUpdate';
+import GradesUpdate from './components/Updates/GradesUpdate';
+import InfoUpdate from './components/Updates/InfoUpdate';
 
 function App() {
   return (
-    <CartProvider>
     <Router>
       <div>
         <Routes>
@@ -29,11 +28,19 @@ function App() {
           <Route exact path="/Profile" element={<ProfileNavbar />}/>
           <Route exact path="/About" element={<About />}/>
           <Route exact path="/Experience" element={<Experience />}/>
-          <Route exact path="/Skills" element={<Skills/>}/>
+          <Route exact path="/InterviewExperiences" element={<Experiences />}/>
+          <Route exact path="/FindStudent" element={<FindStudent />}/>
+          <Route exact path='/Sent' element={<Sent />}/>
+          <Route exact path='/Recieved' element={<Recieved />}/>
+          <Route path='/ExperiencePage/:type' Component={ExperiencePage}/>
+          <Route exact path='/Cpi' element={<Cpi />}/>
+          <Route exact path='/Resources' element={<Resources />}/>
+          <Route exact path='/ExperienceUpdate' element={<ExperienceUpdate />}/>
+          <Route exact path='/GradesUpdate' element={<GradesUpdate />}/>
+          <Route exact path='/InfoUpdate' element={<InfoUpdate />}/>
         </Routes>
       </div>
     </Router>
-    </CartProvider>
   );
 }
 

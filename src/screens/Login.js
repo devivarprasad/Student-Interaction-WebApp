@@ -23,6 +23,8 @@ export default function Login() {
       else{
         localStorage.setItem('userEmail',credentials.email)
         localStorage.setItem('isLogin','true')
+        localStorage.setItem('profileEmail',"")
+        localStorage.setItem('isProfile','false')
         navigate("/");
       }
     })
@@ -35,17 +37,17 @@ export default function Login() {
 
 
   return(
-    <form onSubmit={handlesubmit}> 
+    <div> 
     <div><Navbar /></div>
     <div className="wrapper ">
         
         <div className="logo">
-            <img src="https://cdn-icons-png.flaticon.com/512/2830/2830305.png" alt=""/>
+            <img src="https://i.ibb.co/883YwKr/Whats-App-Image-2023-04-04-at-21-30-15.jpg" alt=""/>
         </div>
         <div className="text-center m-4 name text-success">
-            GoFood
+            MNNITIAN
         </div>
-        <div><label htmlFor="exampleInputEmail1" className="form-label m-4">Login Here</label></div>
+        <div><label htmlFor="exampleInputEmail1" className="form-label md-3">Login Here</label></div>
         <div className="form-field d-flex align-items-center">
             <span className="far fa-user"></span>
             <input type="email" id="userName" placeholder="email" name='email' value={credentials.email} onChange={onChange}/>
@@ -54,12 +56,11 @@ export default function Login() {
             <span className="fas fa-key"></span>
             <input type="password"  id="pwd" placeholder="Password" name='password' value={credentials.password} onChange={onChange} />
         </div>
-        <button className="btn mt-3 bg-success">Login</button>
+        <button className="btn mt-3 bg-success" onClick={handlesubmit}>Login</button>
         <Link to="/SignUp" className="btn mt-3 fs-6 bg-success">New User</Link>
         
       </div>
-      <div><Footer /></div>
-    </form>
+    </div>
   )
 }
 

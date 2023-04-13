@@ -2,15 +2,15 @@ const mongoose = require('mongoose')
 
 const {Schema} =mongoose;
 
-const SkillSchema= new Schema({
-    email:{
+const SentSchema= new Schema({
+    userEmail:{
         type:String,
         required: true
     },
-    SkillData:{
-        type: Object,
+    requestData:{
+        type:Array,
         required: true
     }
 });
 
-module.exports = mongoose.model('UserSkill',SkillSchema);
+module.exports = mongoose.model('SentRequest',SentSchema);

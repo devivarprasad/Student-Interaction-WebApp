@@ -6,15 +6,46 @@ const connectDB = async () => {
         if(err) console.log("---",err)
         else{
             console.log('Mongo connected');
-            const fetched_data = await mongoose.connection.db.collection("Skills");
+            let fetched_data = await mongoose.connection.db.collection("experiences");
+            fetched_data.find({}).toArray(async function(err, data) {
+                if(err) console.log(err);
+                else{
+                    global.experience=data;
+                    //console.log(global.experience)
+                }
+            })
+            fetched_data = await mongoose.connection.db.collection("Skills");
             fetched_data.find({}).toArray(async function(err, data) {
                     if(err) console.log(err);
                     else{
                         global.Skills=data[0].Skills;
-                        console.log(Skills)
                     }
                 })
-            console.log('Mongo connected');
+            
+            fetched_data = await mongoose.connection.db.collection("userskills");
+            fetched_data.find({}).toArray(async function(err, data) {
+                    if(err) console.log(err);
+                    else{
+                        global.userSkills=data;
+                        //console.log(global.userSkills)
+                    }
+            })
+            fetched_data = await mongoose.connection.db.collection("sentrequests");
+            fetched_data.find({}).toArray(async function(err, data) {
+                    if(err) console.log(err);
+                    else{
+                        global.sentRequests=data;
+                        //console.log(global.sentRequests)
+                    }
+            })
+            fetched_data = await mongoose.connection.db.collection("recievedrequests");
+            fetched_data.find({}).toArray(async function(err, data) {
+                    if(err) console.log(err);
+                    else{
+                        global.recievedRequests=data;
+                        //console.log(global.recievedRequests)
+                    }
+            })
         }
     });
 }

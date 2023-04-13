@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
   })
   
-app.use('/api',require("./Routes/CreateUser"));
+app.use('/api',require("./Routes/Fetching"));
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

@@ -7,7 +7,7 @@ const UserSchema= new Schema({
         type: String,
         required: true
     },
-    location:{
+    branch:{
         type: String,
         required: true
     },
@@ -16,6 +16,10 @@ const UserSchema= new Schema({
         required: true
     },
     contact:{
+        type: String,
+        required: true
+    },
+    hostel:{
         type: String,
         required: true
     },
