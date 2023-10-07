@@ -10,6 +10,7 @@ const connectDB = async () => {
             fetched_data.find({}).toArray(async function(err, data) {
                 if(err) console.log(err);
                 else{
+                    //console.log(data);
                     global.experience=data;
                     //console.log(global.experience)
                 }

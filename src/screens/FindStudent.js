@@ -39,7 +39,7 @@ export default function FindStudent() {
         fetchUser();
     }, [])
 
-  console.log(Skills_data)
+  //console.log(Skills_data)
   if(Skills_data.length==14)Skills_data.shift();
   return (
     <div>
@@ -52,7 +52,7 @@ export default function FindStudent() {
       <div className='container'>
           {
             
-            Skills_data!==[]
+            Skills_data.length!==0
             ? Skills_data.filter((data,i)=>(String(data).toLowerCase().includes(String(search).toLowerCase())) ).map(filterItems=>{
               return(
                  <div className='row mb-3'>
@@ -60,7 +60,7 @@ export default function FindStudent() {
                     {filterItems}
                   </div>
                   <hr />
-                  {usersSkills!== []
+                  {usersSkills.length!==0
                     ?usersSkills.filter((item)=> (String(item.SkillData.skill1).toLowerCase()===(String(filterItems).toLowerCase())) 
                     || (String(item.SkillData.skill2).toLowerCase()===(String(filterItems).toLowerCase())) 
                     || (String(item.SkillData.skill3).toLowerCase()===(String(filterItems).toLowerCase()))  )

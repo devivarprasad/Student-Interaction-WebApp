@@ -22,7 +22,9 @@ export default function Card(props) {
           message:props.message
         })
     }).then(async (res) => {
-        alert("Request Sent")
+        let response= await res.json()
+        if(response.success) alert("Request Sent");
+        else  alert("You Have Allready Sent A Request To This User")
     })
   }
   else{

@@ -26,7 +26,7 @@ export default function Sent() {
   useEffect(() => {
     fetchRecievedRequests();
 }, [])
-  console.log(recievedRequests)
+  //console.log(recievedRequests)
   return (
     <div>
       <div><Navbar /></div>

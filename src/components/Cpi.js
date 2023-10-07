@@ -79,9 +79,9 @@ export default function Cpi() {
        {cpi!=null?
        <div>
        <div className='m-3 center' ><Line options={options} data={data}  /></div>
-       <div class="container mt-3">
+       <div className="container mt-3">
         <h4>Spi,Cpi Table</h4>
-        <table class="table table-bordered border-black">
+        <table className="table table-bordered border-black">
           <thead>
             <tr>
               <th>Semister</th>

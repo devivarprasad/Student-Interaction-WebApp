@@ -17,6 +17,7 @@ import ExperienceUpdate from './components/Updates/ExperienceUpdate';
 import GradesUpdate from './components/Updates/GradesUpdate';
 import InfoUpdate from './components/Updates/InfoUpdate';
 
+
 function App() {
   return (
     <Router>

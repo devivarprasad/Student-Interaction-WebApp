@@ -22,7 +22,7 @@ export default  function About() {
             let response= await res.json()
             await setData([response.name,response.branch,response.contact,response.hostel])
         })}
-        console.log(data)
+        //console.log(data)
         useEffect(() => {
             fetchUser()
         }, [])

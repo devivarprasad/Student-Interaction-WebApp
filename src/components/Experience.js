@@ -86,8 +86,8 @@ export default function Experience() {
             experiences[0]!==null
             ? experiences.map((data)=>{
               return(
-                 <div className='row mb-3'>
-                  {(data.experience !== [] && data.email==email)
+                 <div className='row mb-2'>
+                  {(data.experience.length!==0 && data.email===email)
                     ?data.experience.filter((item)=> (String(item[1].name).toLowerCase().includes(String(Experiencesearch).toLowerCase())))
                     .map(userSkills=>{ 
                       return(

@@ -21,7 +21,7 @@ export default function Experiences() {
         useEffect(() => {
             fetchUser()
         }, [])
-  console.log(experience)
+  //console.log(experience)
   return (
     <div>
       <div><Navbar /></div>
@@ -31,12 +31,12 @@ export default function Experiences() {
       </div>
       <div className='container card-group'>
           {
-            experience!==[]
+            experience.length!==0
             ? experience.map((data)=>{
               return(
                 
-                 <div className=''>
-                  {data.experience !== []
+                 <div className='card-group'>
+                  {data.experience.length !==0
                     ?data.experience.filter((item)=> (String(item[1].name).toLowerCase().includes(String(search).toLowerCase())))
                     .map(filterItems=>{ 
                       return(

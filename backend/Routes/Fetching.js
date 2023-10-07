@@ -7,6 +7,9 @@ const SkillsOfUser=require("../models/Skills");
 const Sent=require("../models/Sent")
 const Recieved=require("../models/Recieved")
 const Grade=require("../models/Grade")
+const bcrypt=require('bcrypt');
+const saltNumber=10;
+
 
 router.post("/creatuser",[
     body('email').isEmail(),
@@ -17,6 +20,8 @@ router.post("/creatuser",[
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
+    const salt=await bcrypt.genSalt(saltNumber)
+    let securedPassword=await bcrypt.hash(req.body.password,salt);
     let email=req.body.email
     let fool=await User.findOne({email})
     //console.log(fool)
@@ -30,7 +35,7 @@ router.post("/creatuser",[
             email:req.body.email,
             contact:req.body.contact,
             hostel:req.body.hostel,
-            password:req.body.password
+            password:securedPassword
         })
         res.json({success:true});
         
@@ -77,12 +82,14 @@ router.post("/loginuser",[
         return res.status(400).json({ errors: errors.array() });
     }
     let email=req.body.email;
+    
     try{
         let userData=await User.findOne({email});
+        const bcryptPassword=await bcrypt.compare(req.body.password,userData.password);
         if(!userData){
             return res.status(400).json({errors: "Enter a Valid email"})
         }
-        if(req.body.password !== userData.password){
+        if(!bcryptPassword){
             return res.status(400).json({errors: "Enter a Valid password"})            
         }
         return res.json({success:true})
@@ -222,12 +229,15 @@ router.post("/recievedRequests",async(req,res)=>{
 router.post('/Requests', async (req, res) => {
     let data = [{RequestedEmail:req.body.RequestedEmail,message:req.body.message,accepted:false}];
     let email=req.body.userEmail;
+    //console.log(email,req.body.RequestedEmail);
+    let fool=await Sent.findOne({'userEmail':email,'requestData.RequestedEmail':req.body.RequestedEmail});
+    if(fool!==null) {return res.json({ success: false });}
     //if email not exisitng in db then create: else: InsertMany()
     let eId = await Sent.findOne({ 'userEmail':email })    
-    console.log(email,data)
+    //console.log(email,data)
     if (eId===null) {
         try { 
-            console.log("hii")
+            //console.log("hii")
             await Sent.create({
                 userEmail:email,
                 requestData:data
@@ -238,7 +248,7 @@ router.post('/Requests', async (req, res) => {
         }
     }
     else {
-        console.log("hiiii")
+        //console.log("hiiii")
             try {
                 await Sent.findOneAndUpdate({'userEmail':email},
                     { $push:{requestData: data[0]} })
@@ -247,50 +257,53 @@ router.post('/Requests', async (req, res) => {
                 res.json({ success: false })
             }
         }
-        data = [{recievedEmail:req.body.userEmail,message:req.body.message,accepted:false}];
-        email=req.body.RequestedEmail;
-        //if email not exisitng in db then create: else: InsertMany()
-        eId = await Recieved.findOne({ 'userEmail':email })    
-        console.log(email,data)
-        if (eId===null) {
-            try { 
-                console.log("recieved")
-                await Recieved.create({
-                    userEmail:email,
-                    recievedData:data
-                }).then(() => {
-                    res.json({ success: true })
-                })
+    data = [{recievedEmail:req.body.userEmail,message:req.body.message,accepted:false}];
+    email=req.body.RequestedEmail;
+    //if email not exisitng in db then create: else: InsertMany()
+    eId = await Recieved.findOne({ 'userEmail':email })    
+    //console.log(email,data)
+    if (eId===null) {
+        try { 
+            console.log("recieved")
+            await Recieved.create({
+                userEmail:email,
+                recievedData:data
+            }).then(() => {
+                res.json({ success: true })
+            })
+        } catch (error) {
+            //console.log(error.message)
+            res.json({success:false});
+        }
+    }
+    else {
+            try {
+                await Recieved.findOneAndUpdate({'userEmail':email},
+                    { $push:{recievedData: data[0]} }).then(() => {
+                        res.json({ success: true })
+                    })
             } catch (error) {
                 //console.log(error.message)
-                res.json({success:false});
+                res.json({ success: false })
             }
         }
-        else {
-                try {
-                    await Recieved.findOneAndUpdate({'userEmailail':email},
-                        { $push:{recievedData: data[0]} }).then(() => {
-                            res.json({ success: true })
-                        })
-                } catch (error) {
-                    //console.log(error.message)
-                    res.json({ success: false })
-                }
-            }
     })
 
 router.post('/updateRequest',async (req, res) => {
+    //console.log("this is updateRequest")
     let userEmail = req.body.userEmail;
     let recievedEmail = req.body.recievedEmail;
-    console.log(userEmail,recievedEmail);
+    //console.log(userEmail,recievedEmail);
+    
     try {
+        
         await Sent.updateOne({'userEmail':recievedEmail,'requestData.RequestedEmail':userEmail},
             { $set:{'requestData.$.accepted':true} }).then(() => {
-                console.log("hii")
+                //console.log("hii")
             })
             await Recieved.updateOne({'userEmail':userEmail,'recievedData.recievedEmail':recievedEmail},
             { $set:{'recievedData.$.accepted':true} }).then(() => {
-                console.log("hii")
+                //console.log("hii")
                 res.json({ success: true })
             })
     } catch (error) {
@@ -299,17 +312,19 @@ router.post('/updateRequest',async (req, res) => {
 }})
 
 router.post('/updateEndRequest',async (req, res) => {
+    //console.log("this is updateEndRequest")
     let userEmail = req.body.userEmail;
     let recievedEmail = req.body.recievedEmail;
-    console.log(userEmail,recievedEmail);
+    //console.log(userEmail,recievedEmail);
+    
     try {
         await Sent.updateOne({'userEmail':recievedEmail,'requestData.RequestedEmail':userEmail},
             { $set:{'requestData.$.accepted':false} }).then(() => {
-                console.log("hii")
+                //console.log("hii")
             })
             await Recieved.updateOne({'userEmail':userEmail,'recievedData.recievedEmail':recievedEmail},
             { $set:{'recievedData.$.accepted':false} }).then(() => {
-                console.log("hii")
+                //console.log("hii")
                 res.json({ success: true })
             })
     } catch (error) {
